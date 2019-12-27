@@ -1,10 +1,34 @@
 import React, { Component } from 'react';
 import { Row, Col, Input } from 'antd';
 
+import readerService from '../api/readerService';
+
 const { Search: UrlInput } = Input;
 
 class HomeContainer extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loading: false,
+    }
+  }
+  
+  handleUrlSubmit = async (url) => {
+    this.toggleLoading();
+    const content = await readerService.postUrlPreview(url);
+    this.toggleLoading();
+  }
+
+  toggleLoading() {
+    this.setState({
+      loading: !this.state.loading 
+    })
+  }
+
   render() {
+    const { loading } = this.state;
+
     return (
       <Row>
           <Col span={8} offset={8}>
@@ -12,7 +36,8 @@ class HomeContainer extends Component {
               placeholder="Enter URL"
               enterButton="Submit"
               size="large"
-              onSearch={value => console.log(value)}
+              onSearch={this.handleUrlSubmit}
+              loading={loading}
               style={{
                 marginTop: '200px'
               }}
