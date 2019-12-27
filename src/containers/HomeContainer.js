@@ -1,22 +1,19 @@
 import React, { Component } from 'react';
 import { Row, Col, Input } from 'antd';
-
+import { withRouter } from 'react-router-dom';
 import readerService from '../api/readerService';
 
 const { Search: UrlInput } = Input;
 
 class HomeContainer extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      loading: false,
-    }
+  state = {
+    loading: false,
   }
   
   handleUrlSubmit = async (url) => {
     this.toggleLoading();
     const content = await readerService.postUrlPreview(url);
+    this.props.history.push('/preview')
     this.toggleLoading();
   }
 
@@ -48,4 +45,4 @@ class HomeContainer extends Component {
   }
 }
 
-export default HomeContainer;
+export default withRouter(HomeContainer);
