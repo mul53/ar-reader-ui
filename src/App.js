@@ -4,7 +4,7 @@ import { Input, Row, Col } from 'antd';
 import './App.css';
 import Nav from './Nav';
 
-const { Search } = Input;
+const { Search: UrlInput } = Input;
 
 class App extends Component {
   render() {
@@ -13,7 +13,7 @@ class App extends Component {
         <Nav />
         <Row>
           <Col span={8} offset={8}>
-            <Search
+            <UrlInput
               placeholder="Enter URL"
               enterButton="Submit"
               size="large"
