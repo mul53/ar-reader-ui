@@ -1,26 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import { Input, Row, Col } from 'antd';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import './App.css';
+import Nav from './Nav';
+
+const { Search } = Input;
+
+class App extends Component {
+  render() {
+    return (
+      <div className="App">
+        <Nav />
+        <Row>
+          <Col span={8} offset={8}>
+            <Search
+              placeholder="Enter URL"
+              enterButton="Submit"
+              size="large"
+              onSearch={value => console.log(value)}
+              style={{
+                marginTop: '200px'
+              }}
+            />
+          </Col>
+        </Row>
+      </div>
+    );
+  }
 }
 
 export default App;
