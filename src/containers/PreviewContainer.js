@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Radio, Typography, Button, Layout } from 'antd';
+import { connect } from 'react-redux';
 import ContentViewer from '../components/ContentViewer';
 import Container from '../components/Container';
 
@@ -36,4 +37,4 @@ class PreviewContainer extends Component {
   }
 }
 
-export default PreviewContainer;
+export default connect()(PreviewContainer);

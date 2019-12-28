@@ -1,48 +1,51 @@
 import React, { Component } from 'react';
 import { Row, Col, Input } from 'antd';
-import { withRouter } from 'react-router-dom';
-import readerService from '../api/readerService';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { 
+  getUrlPreview as getUrlPreviewAction 
+} from '../actions/actionCreators/content';
 
 const { Search: UrlInput } = Input;
 
 class HomeContainer extends Component {
-  state = {
-    loading: false,
-  }
-  
-  handleUrlSubmit = async (url) => {
-    this.toggleLoading();
-    const content = await readerService.postUrlPreview(url);
-    this.props.history.push('/preview')
-    this.toggleLoading();
-  }
-
-  toggleLoading() {
-    this.setState({
-      loading: !this.state.loading 
-    })
+  handleUrlSubmit = (url) => {
+    const { getUrlPreview } = this.props;
+    getUrlPreview(url);
   }
 
   render() {
-    const { loading } = this.state;
+    const { searchLoading } = this.props;
 
     return (
       <Row>
-          <Col span={8} offset={8}>
-            <UrlInput
-              placeholder="Enter URL"
-              enterButton="Submit"
-              size="large"
-              onSearch={this.handleUrlSubmit}
-              loading={loading}
-              style={{
-                marginTop: '200px'
-              }}
-            />
-          </Col>
-        </Row>
+        <Col span={8} offset={8}>
+          <UrlInput
+            placeholder="Enter URL"
+            enterButton="Submit"
+            size="large"
+            onSearch={this.handleUrlSubmit}
+            loading={searchLoading}
+            style={{
+              marginTop: '200px'
+            }}
+          />
+        </Col>
+      </Row>
     );
   }
 }
 
-export default withRouter(HomeContainer);
+const mapStateToProps = state => {
+  const { ui } = state;
+  return { searchLoading: ui.searchLoading }
+}
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    { 
+      getUrlPreview: getUrlPreviewAction 
+    }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeContainer);
