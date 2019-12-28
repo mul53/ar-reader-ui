@@ -1,10 +1,16 @@
 import React from 'react';
+import { Card } from 'antd';
 
-function ContentViewer({ children }) {
+function ContentViewer({ children, ...otherProps }) {
   return (
-    <div>
-      { children }
-    </div>
+    <Card 
+      type="inner" 
+      title="Preview"
+      bodyStyle={{ height: '600px', overflowY: 'scroll' }} 
+      { ...otherProps }>
+      <div dangerouslySetInnerHTML={{__html: children }}>
+      </div>
+    </Card>
   )
 }
 

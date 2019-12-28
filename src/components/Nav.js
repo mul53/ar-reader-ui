@@ -1,12 +1,13 @@
 import React from 'react';
 import { Layout, Menu } from 'antd';
+import Container from './Container';
 
 const { Header } = Layout;
 
 function Nav() {
   return (
-    <Layout className="layout">
-      <Header>
+    <Layout className="layout" style={{ backgroundColor: '#001529' }}>
+      <Container>
         <Menu
           theme="dark"
           mode="horizontal"
@@ -14,7 +15,7 @@ function Nav() {
         >
           <Menu.Item key="1">AR Content</Menu.Item>
         </Menu>
-      </Header>
+      </Container>
     </Layout>
   );
 }

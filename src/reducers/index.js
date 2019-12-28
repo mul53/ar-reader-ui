@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux';
+import { connectRouter } from 'connected-react-router';
 
 import previewReducer from './previewReducer';
 import uiReducer from './uiReducer';
 
-export default combineReducers({
+export default (history) => combineReducers({
   preview: previewReducer,
-  ui: uiReducer
+  ui: uiReducer,
+  router: connectRouter(history)
 });
