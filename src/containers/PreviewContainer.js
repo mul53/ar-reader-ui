@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Radio, Typography, Button, Layout, Modal } from 'antd';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { push as pushA } from 'connected-react-router';
 import ContentViewer from '../components/ContentViewer';
 import Container from '../components/Container';
 
@@ -12,7 +14,15 @@ class PreviewContainer extends Component {
     value: 1,
     visible: false,
     confirmLoading: false
-  };
+  }
+
+  componentDidMount() {
+    const { content, push } = this.props;
+
+    if (!content.text) {
+      push('/');
+    }
+  }
 
   onChange = e => {
     this.setState({
@@ -39,7 +49,6 @@ class PreviewContainer extends Component {
   };
 
   handleCancel = () => {
-    console.log('Clicked cancel button');
     this.setState({
       visible: false,
     });
@@ -91,4 +100,8 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(PreviewContainer);
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ push: pushA }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PreviewContainer);
