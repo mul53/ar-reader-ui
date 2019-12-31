@@ -6,6 +6,9 @@ import { push as pushA } from 'connected-react-router';
 import ContentViewer from '../components/ContentViewer';
 import Container from '../components/Container';
 import { parsers, contentType } from '../utils/constants';
+import {
+  getUrlHtmlPreview as getUrlHtmlPreviewAction
+} from '../actions/actionCreators/content/index';
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -15,13 +18,12 @@ class PreviewContainer extends Component {
     contentTypeValue: contentType.HTML,
     visible: false,
     confirmLoading: false,
-    htmlParser: 0,
     textParser: ""
   }
 
   onChange = e => {
     this.setState({
-      value: e.target.value
+      contentTypeValue: e.target.value
     })
   }
 
@@ -49,17 +51,18 @@ class PreviewContainer extends Component {
     });
   };
 
-  retryHandler = () => {
-    const { value, htmlParser } = this.state;
+  retryHandler = async () => {
+    const { getUrlHtmlPreview, url, htmlParser } = this.props;
+    const { contentTypeValue } = this.state;
 
-    if (value === contentType.HTML) {
+    if (contentTypeValue === contentType.HTML) {
       const { html: htmlParsers } = parsers;
       const newValue = htmlParser + 1;
       const nextHtmlParser = newValue % htmlParsers.length;
 
-      this.setState({
-        htmlParser: nextHtmlParser
-      });
+      console.log(url);
+
+      getUrlHtmlPreview(url, nextHtmlParser, htmlParsers[nextHtmlParser]);
     }
   }
   
@@ -106,12 +109,17 @@ const mapStateToProps = state => {
   const { content } = state;
 
   return {
-    html: content.html
+    html: content.html,
+    url: content.currentUrl,
+    htmlParser: content.htmlParser
   }
 }
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ push: pushA }, dispatch);
+  return bindActionCreators({ 
+    push: pushA,
+    getUrlHtmlPreview: getUrlHtmlPreviewAction 
+  }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PreviewContainer);

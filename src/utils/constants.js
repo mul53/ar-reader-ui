@@ -1,5 +1,7 @@
 export const parsers = {
-  html: ['1']
+  html: {
+    "0": "1"
+  }
 };
 
 export const contentType = {
