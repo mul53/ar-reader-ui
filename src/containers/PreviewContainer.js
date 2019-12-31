@@ -19,13 +19,20 @@ class PreviewContainer extends Component {
     contentTypeValue: contentType.HTML,
     visible: false,
     confirmLoading: false,
-    textParser: ""
   }
 
   onChange = e => {
+    
+    const { text, getUrlTextPreview, url } = this.props;
+    
     this.setState({
       contentTypeValue: e.target.value
+    }, () => {
+      if (this.state.contentTypeValue === contentType.TEXT && !text.length) {
+          getUrlTextPreview(url, 0);
+      }
     })
+
   }
 
   showModal = () => {
@@ -62,7 +69,8 @@ class PreviewContainer extends Component {
       const nextHtmlParser = newValue % Object.keys(htmlParsers).length;
 
       getUrlHtmlPreview(url, nextHtmlParser, htmlParsers[nextHtmlParser]);
-    } else if (contentTypeValue === contentType.TEXT) {
+    } 
+    else if (contentTypeValue === contentType.TEXT) {
       const { text: textParsers } = parsers;
       const newValue = textParser + 1;
       const nextTextParser = newValue % Object.keys(textParsers).length;
