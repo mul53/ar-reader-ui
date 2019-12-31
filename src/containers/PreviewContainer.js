@@ -58,9 +58,7 @@ class PreviewContainer extends Component {
     if (contentTypeValue === contentType.HTML) {
       const { html: htmlParsers } = parsers;
       const newValue = htmlParser + 1;
-      const nextHtmlParser = newValue % htmlParsers.length;
-
-      console.log(url);
+      const nextHtmlParser = newValue % Object.keys(htmlParsers).length;
 
       getUrlHtmlPreview(url, nextHtmlParser, htmlParsers[nextHtmlParser]);
     }

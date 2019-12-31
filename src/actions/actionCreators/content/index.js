@@ -19,6 +19,8 @@ export const getUrlHtmlPreview = (url, nextParserId, parserId) => async (dispatc
       payload: content.data.html
     });
 
+    console.log(nextParserId);
+
     dispatch({
       type: SET_CURRENT_URL,
       payload: url
