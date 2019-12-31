@@ -1,13 +1,15 @@
 import React from 'react';
-import { Card } from 'antd';
+import { Card, Button } from 'antd';
 
-function ContentViewer({ children, ...otherProps }) {
+function ContentViewer({ children, retryHandler,...otherProps }) {
   return (
     <Card 
       type="inner" 
       title="Preview"
       bodyStyle={{ height: '600px', overflowY: 'scroll' }} 
-      { ...otherProps }>
+      { ...otherProps }
+      extra={ <Button type="primary" onClick={retryHandler}>Retry</Button> }
+      >
       <div dangerouslySetInnerHTML={{__html: children }}>
       </div>
     </Card>

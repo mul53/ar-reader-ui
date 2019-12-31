@@ -5,23 +5,18 @@ import { bindActionCreators } from 'redux';
 import { push as pushA } from 'connected-react-router';
 import ContentViewer from '../components/ContentViewer';
 import Container from '../components/Container';
+import { parsers, contentType } from '../utils/constants';
 
 const { Content } = Layout;
 const { Title } = Typography;
 
 class PreviewContainer extends Component {
   state = {
-    value: 1,
+    contentTypeValue: contentType.HTML,
     visible: false,
-    confirmLoading: false
-  }
-
-  componentDidMount() {
-    const { content, push } = this.props;
-
-    if (!content.text) {
-      push('/');
-    }
+    confirmLoading: false,
+    htmlParser: 0,
+    textParser: ""
   }
 
   onChange = e => {
@@ -53,10 +48,25 @@ class PreviewContainer extends Component {
       visible: false,
     });
   };
+
+  retryHandler = () => {
+    const { value, htmlParser } = this.state;
+
+    if (value === contentType.HTML) {
+      const { html: htmlParsers } = parsers;
+      const newValue = htmlParser + 1;
+      const nextHtmlParser = newValue % htmlParsers.length;
+
+      this.setState({
+        htmlParser: nextHtmlParser
+      });
+    }
+  }
   
   render() {
-    const { content } = this.props;
-    const { value: mode, visible, confirmLoading } = this.state; 
+    const { html } = this.props;
+    // TODO: rename value type
+    const { contentTypeValue, visible, confirmLoading } = this.state; 
 
     return (
       <Container>
@@ -67,12 +77,12 @@ class PreviewContainer extends Component {
         }}>
           <Content>
             <Title level={3} style={{ margin: '16px 0px' }}>Choose Content type</Title>
-            <Radio.Group onChange={this.onChange} value={this.state.value} style={{ marginBottom: '16px' }}>
-              <Radio value={1}>Text</Radio>
-              <Radio value={2}>Formatted Text</Radio>
+            <Radio.Group onChange={this.onChange} value={contentTypeValue} style={{ marginBottom: '16px' }}>
+              <Radio value={contentType.HTML}>Html</Radio>
+              <Radio value={contentType.TEXT}>Text</Radio>
             </Radio.Group>
-            <ContentViewer style={{ marginBottom: '16px' }}>
-              { mode === 1 ? content.text : content.formatted_text }
+            <ContentViewer style={{ marginBottom: '16px' }} retryHandler={this.retryHandler}>
+              { contentTypeValue === contentType.TEXT ? "" : html}
             </ContentViewer>
             <Button type="primary" onClick={this.showModal}>Submit</Button>
             <Modal
@@ -93,10 +103,10 @@ class PreviewContainer extends Component {
 }
 
 const mapStateToProps = state => {
-  const { preview } = state;
+  const { content } = state;
 
   return {
-    content: preview.content
+    html: content.html
   }
 }
 

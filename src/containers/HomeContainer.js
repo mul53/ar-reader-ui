@@ -3,15 +3,15 @@ import { Row, Col, Input } from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { 
-  getUrlPreview as getUrlPreviewAction 
+  getUrlHtmlPreview as getUrlHtmlPreviewAction
 } from '../actions/actionCreators/content';
 
 const { Search: UrlInput } = Input;
 
 class HomeContainer extends Component {
   handleUrlSubmit = (url) => {
-    const { getUrlPreview } = this.props;
-    getUrlPreview(url);
+    const { getUrlHtmlPreview } = this.props;
+    getUrlHtmlPreview(url);
   }
 
   render() {
@@ -44,7 +44,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     { 
-      getUrlPreview: getUrlPreviewAction 
+      getUrlHtmlPreview: getUrlHtmlPreviewAction
     }, dispatch);
 }
 
