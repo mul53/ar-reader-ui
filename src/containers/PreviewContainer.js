@@ -7,7 +7,8 @@ import ContentViewer from '../components/ContentViewer';
 import Container from '../components/Container';
 import { parsers, contentType } from '../utils/constants';
 import {
-  getUrlHtmlPreview as getUrlHtmlPreviewAction
+  getUrlHtmlPreview as getUrlHtmlPreviewAction,
+  getUrlTextPreview as getUrlTextPreviewAction
 } from '../actions/actionCreators/content/index';
 
 const { Content } = Layout;
@@ -52,7 +53,7 @@ class PreviewContainer extends Component {
   };
 
   retryHandler = async () => {
-    const { getUrlHtmlPreview, url, htmlParser } = this.props;
+    const { getUrlHtmlPreview, url, htmlParser, textParser, getUrlTextPreview } = this.props;
     const { contentTypeValue } = this.state;
 
     if (contentTypeValue === contentType.HTML) {
@@ -61,11 +62,17 @@ class PreviewContainer extends Component {
       const nextHtmlParser = newValue % Object.keys(htmlParsers).length;
 
       getUrlHtmlPreview(url, nextHtmlParser, htmlParsers[nextHtmlParser]);
+    } else if (contentTypeValue === contentType.TEXT) {
+      const { text: textParsers } = parsers;
+      const newValue = textParser + 1;
+      const nextTextParser = newValue % Object.keys(textParsers).length;
+
+      getUrlTextPreview(url, nextTextParser, textParsers[nextTextParser]);
     }
   }
   
   render() {
-    const { html } = this.props;
+    const { html, text } = this.props;
     // TODO: rename value type
     const { contentTypeValue, visible, confirmLoading } = this.state; 
 
@@ -83,7 +90,7 @@ class PreviewContainer extends Component {
               <Radio value={contentType.TEXT}>Text</Radio>
             </Radio.Group>
             <ContentViewer style={{ marginBottom: '16px' }} retryHandler={this.retryHandler}>
-              { contentTypeValue === contentType.TEXT ? "" : html}
+              { contentTypeValue === contentType.TEXT ? text : html}
             </ContentViewer>
             <Button type="primary" onClick={this.showModal}>Submit</Button>
             <Modal
@@ -108,15 +115,18 @@ const mapStateToProps = state => {
 
   return {
     html: content.html,
+    text: content.text,
     url: content.currentUrl,
-    htmlParser: content.htmlParser
+    htmlParser: content.htmlParser,
+    textParser: content.textParser,
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({ 
     push: pushA,
-    getUrlHtmlPreview: getUrlHtmlPreviewAction 
+    getUrlHtmlPreview: getUrlHtmlPreviewAction,
+    getUrlTextPreview: getUrlTextPreviewAction
   }, dispatch);
 }
 
