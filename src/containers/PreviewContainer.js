@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Radio, Typography, Button, Layout, Modal } from 'antd';
+import { Radio, Typography, Button, Layout, Modal, Checkbox, PageHeader } from 'antd';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push as pushA } from 'connected-react-router';
@@ -19,6 +19,8 @@ class PreviewContainer extends Component {
     contentTypeValue: contentType.HTML,
     visible: false,
     confirmLoading: false,
+    checkedConsent: false,
+    consentValidationErrorMessage: ''
   }
 
   onChange = e => {
@@ -78,11 +80,35 @@ class PreviewContainer extends Component {
       getUrlTextPreview(url, nextTextParser, textParsers[nextTextParser]);
     }
   }
+
+  handleConsent = () => {
+    const { checkedConsent, consentValidationErrorMessage } = this.state;
+
+    this.setState({
+      checkedConsent: !checkedConsent
+    }, () => {
+      if (!checkedConsent && consentValidationErrorMessage.length) {
+        this.setState({
+          consentValidationErrorMessage: ''
+        });
+      } 
+    });
+  }
+
+  handleSubmit = () => {
+    const { checkedConsent } = this.state;
+    
+    if (!checkedConsent) {
+      this.setState({
+        consentValidationErrorMessage: "Please check the field before submitting content."
+      })
+    }
+  }
   
   render() {
-    const { html, text } = this.props;
+    const { html, text, push } = this.props;
     // TODO: rename value type
-    const { contentTypeValue, visible, confirmLoading } = this.state; 
+    const { contentTypeValue, visible, confirmLoading, checkedConsent, consentValidationErrorMessage } = this.state; 
 
     return (
       <Container>
@@ -92,7 +118,14 @@ class PreviewContainer extends Component {
           margin: '32px 0' 
         }}>
           <Content>
-            <Title level={3} style={{ margin: '16px 0px' }}>Choose Content type</Title>
+            <PageHeader
+              style={{
+                padding: "16px 0px 0px 0px"
+              }}
+              onBack={() => push('/')}
+              title="Preview"
+            />
+            <Title level={4} style={{ margin: '16px 0px' }}>Choose Content type</Title>
             <Radio.Group onChange={this.onChange} value={contentTypeValue} style={{ marginBottom: '16px' }}>
               <Radio value={contentType.HTML}>Html</Radio>
               <Radio value={contentType.TEXT}>Text</Radio>
@@ -100,7 +133,22 @@ class PreviewContainer extends Component {
             <ContentViewer style={{ marginBottom: '16px' }} retryHandler={this.retryHandler}>
               { contentTypeValue === contentType.TEXT ? text : html}
             </ContentViewer>
-            <Button type="primary" onClick={this.showModal}>Submit</Button>
+            <div
+              style={{
+                marginBottom: "16px"
+              }}
+            >
+              <Checkbox
+                checked={checkedConsent}
+                onChange={this.handleConsent}
+              >
+                Yes, I'm responsible for the archived content and the content is not copyright protected.
+              </Checkbox>
+              { consentValidationErrorMessage.length ?
+                <div style={{ color: 'red' }}>{ consentValidationErrorMessage }</div> : null
+              }
+            </div>
+            <Button type="primary" onClick={this.handleSubmit}>Submit</Button>
             <Modal
               title="Confirm"
               visible={visible}
@@ -111,7 +159,6 @@ class PreviewContainer extends Component {
               <p>Hey yo</p>
             </Modal>
           </Content>
-
         </div>
       </Container>
     );
