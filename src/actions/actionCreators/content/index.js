@@ -11,7 +11,7 @@ import {
 import readerService from '../../../api/readerService';
 import { goToPreview } from '../../actionCreators/routes';
 
-export const getUrlHtmlPreview = (url, nextParserId, parserId) => async (dispatch) => {
+export const postUrlHtmlPreview = (url, nextParserId, parserId) => async (dispatch) => {
   try {
     dispatch({ type: GET_URL_HTML_PREVIEW })
 
@@ -44,7 +44,7 @@ export const getUrlHtmlPreview = (url, nextParserId, parserId) => async (dispatc
   }
 }
 
-export const getUrlTextPreview = (url, nextParserId, parserId) => async (dispatch) => {
+export const postUrlTextPreview = (url, nextParserId, parserId) => async (dispatch) => {
   try {
     dispatch({ 
       type: GET_URL_TEXT_PREVIEW

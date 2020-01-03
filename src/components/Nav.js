@@ -2,8 +2,6 @@ import React from 'react';
 import { Layout, Menu } from 'antd';
 import Container from './Container';
 
-const { Header } = Layout;
-
 function Nav() {
   return (
     <Layout className="layout" style={{ backgroundColor: '#001529' }}>

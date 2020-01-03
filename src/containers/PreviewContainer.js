@@ -7,8 +7,8 @@ import ContentViewer from '../components/ContentViewer';
 import Container from '../components/Container';
 import { parsers, contentType } from '../utils/constants';
 import {
-  getUrlHtmlPreview as getUrlHtmlPreviewAction,
-  getUrlTextPreview as getUrlTextPreviewAction
+  postUrlHtmlPreview as getUrlHtmlPreviewAction,
+  postUrlTextPreview as getUrlTextPreviewAction
 } from '../actions/actionCreators/content/index';
 
 const { Content } = Layout;

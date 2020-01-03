@@ -3,7 +3,7 @@ import { Row, Col, Input } from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { 
-  getUrlHtmlPreview as getUrlHtmlPreviewAction
+  postUrlHtmlPreview as getUrlHtmlPreviewAction
 } from '../actions/actionCreators/content';
 import {
   parsers
@@ -14,8 +14,8 @@ const { Search: UrlInput } = Input;
 class HomeContainer extends Component {
   handleUrlSubmit = (url) => {
     const { getUrlHtmlPreview } = this.props;
-    const [defaultParser,] = Object.entries(parsers.html);
-    const [key, parserId] = defaultParser;
+    const [ defaultParser, ] = Object.entries(parsers.html);
+    const [ key, parserId ] = defaultParser;
     getUrlHtmlPreview(url, key, parserId);
   }
 
