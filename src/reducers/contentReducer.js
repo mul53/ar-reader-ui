@@ -4,7 +4,8 @@ import {
   DELETE_CURRENT_URL,
   SET_HTML_PARSER,
   SET_TEXT_PARSER,
-  GET_URL_TEXT_PREVIEW_SUCCESS
+  GET_URL_TEXT_PREVIEW_SUCCESS,
+  POST_URL_EXTRACT_SUBMIT_SUCCESS
 } from '../actions/actionCreators/content/types';
 
 const initialState = {
@@ -12,7 +13,8 @@ const initialState = {
   text: '',
   currentUrl: '',
   htmlParser: 0,
-  textParser: 0
+  textParser: 0,
+  txId: '',
 }
 
 export default (state = initialState, action) => {
@@ -29,6 +31,8 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, { text: action.payload });
     case SET_TEXT_PARSER:
       return Object.assign({}, state, { textParser: action.payload });
+    case POST_URL_EXTRACT_SUBMIT_SUCCESS:
+      return Object.assign({}, state, { txId: action.payload });
     default:
       return state;
   }

@@ -6,10 +6,36 @@ import {
   SET_HTML_PARSER,   
   GET_URL_TEXT_PREVIEW,
   GET_URL_TEXT_PREVIEW_SUCCESS,
-  SET_TEXT_PARSER
+  SET_TEXT_PARSER,
+  POST_URL_EXTRACT_SUBMIT,
+  POST_URL_EXTRACT_SUBMIT_ERROR,
+  POST_URL_EXTRACT_SUBMIT_SUCCESS
 } from './types';
 import readerService from '../../../api/readerService';
-import { goToPreview } from '../../actionCreators/routes';
+import { goToPreview, goToResult } from '../../actionCreators/routes';
+
+export const postUrlExtractSubmit = (url, contentType, parserId) => async (dispatch) => {
+  try {
+    dispatch({
+      type: POST_URL_EXTRACT_SUBMIT
+    });
+
+    const resp = await readerService.postUrlExtractSubmit(url, contentType, parserId);
+    const { txId } = resp.data;
+
+    dispatch({
+      type: POST_URL_EXTRACT_SUBMIT_SUCCESS,
+      payload: txId
+    });
+
+    goToResult(dispatch);
+
+  } catch (ex) {
+    dispatch({
+      type: POST_URL_EXTRACT_SUBMIT_ERROR
+    })
+  }
+}
 
 export const postUrlHtmlPreview = (url, nextParserId, parserId) => async (dispatch) => {
   try {

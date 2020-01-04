@@ -11,7 +11,7 @@ export default {
     return axios.post(`${BASE_URL}/url/extract/preview?contentType=text`, { url, parserId });
   },
 
-  postArchiveUrl(url, contentType, parserId = "1") {
+  postUrlExtractSubmit(url, contentType, parserId = "1") {
     return axios.post(`${BASE_URL}/url/extract/submit?contentType=${contentType}`, { url, parserId });
   },
 

@@ -8,7 +8,8 @@ import Container from '../components/Container';
 import { parsers, contentType } from '../utils/constants';
 import {
   postUrlHtmlPreview as getUrlHtmlPreviewAction,
-  postUrlTextPreview as getUrlTextPreviewAction
+  postUrlTextPreview as getUrlTextPreviewAction,
+  postUrlExtractSubmit as postUrlExtractSubmitAction
 } from '../actions/actionCreators/content/index';
 
 const { Content } = Layout;
@@ -96,17 +97,25 @@ class PreviewContainer extends Component {
   }
 
   handleSubmit = () => {
-    const { checkedConsent } = this.state;
+    const { checkedConsent, contentTypeValue } = this.state;
+    const { url, htmlParser, textParser, postUrlExtractSubmit } = this.props;
     
     if (!checkedConsent) {
       this.setState({
         consentValidationErrorMessage: "Please check the field before submitting content."
       })
+      return;
+    }
+
+    if (contentTypeValue === contentType.HTML) {
+      postUrlExtractSubmit(url, "html", htmlParser);
+    } else if (contentTypeValue === contentType.TEXT) {
+      postUrlExtractSubmit(url, "text", textParser);
     }
   }
   
   render() {
-    const { html, text, push } = this.props;
+    const { html, text, push, submitLoading } = this.props;
     // TODO: rename value type
     const { contentTypeValue, visible, confirmLoading, checkedConsent, consentValidationErrorMessage } = this.state; 
 
@@ -148,7 +157,7 @@ class PreviewContainer extends Component {
                 <div style={{ color: 'red' }}>{ consentValidationErrorMessage }</div> : null
               }
             </div>
-            <Button type="primary" onClick={this.handleSubmit}>Submit</Button>
+            <Button type="primary" loading={submitLoading} onClick={this.handleSubmit}>Submit</Button>
             <Modal
               title="Confirm"
               visible={visible}
@@ -166,7 +175,7 @@ class PreviewContainer extends Component {
 }
 
 const mapStateToProps = state => {
-  const { content } = state;
+  const { content, ui } = state;
 
   return {
     html: content.html,
@@ -174,6 +183,7 @@ const mapStateToProps = state => {
     url: content.currentUrl,
     htmlParser: content.htmlParser,
     textParser: content.textParser,
+    submitLoading: ui.submitLoading
   }
 }
 
@@ -181,7 +191,8 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators({ 
     push: pushA,
     getUrlHtmlPreview: getUrlHtmlPreviewAction,
-    getUrlTextPreview: getUrlTextPreviewAction
+    getUrlTextPreview: getUrlTextPreviewAction,
+    postUrlExtractSubmit: postUrlExtractSubmitAction
   }, dispatch);
 }
 

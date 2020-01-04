@@ -6,6 +6,7 @@ import './App.css';
 import Nav from './components/Nav';
 import HomeContainer from './containers/HomeContainer';
 import PreviewContainer from './containers/PreviewContainer';
+import ResultContainer from './containers/ResultContainer';
 
 const { Content } = Layout;
 
@@ -21,7 +22,10 @@ class App extends Component {
         <Layout>
           <Content>
             <Switch>
-              <Route path="/preview">
+              <Route path="/submit/success">
+                <ResultContainer />
+              </Route>
+              <Route path="/submit/preview">
                 <PreviewContainer />
               </Route>
               <Route path="/" >
