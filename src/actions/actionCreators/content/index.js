@@ -45,7 +45,7 @@ export const postUrlHtmlPreview = (url, nextParserId, parserId) => async (dispat
 
     dispatch({
       type: GET_URL_HTML_PREVIEW_SUCCESS,
-      payload: content.data.html
+      payload: content.data.content
     });
 
     dispatch({
@@ -80,7 +80,7 @@ export const postUrlTextPreview = (url, nextParserId, parserId) => async (dispat
 
     dispatch({
       type: GET_URL_TEXT_PREVIEW_SUCCESS,
-      payload: content.data.text
+      payload: content.data.content
     });
 
     dispatch({

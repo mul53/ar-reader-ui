@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 function ContentViewer({ children, retryHandler, cardLoading, ...otherProps }) {
   return (
     <Card 
+      className="content-viewer"
       type="inner" 
       title="Preview"
       headStyle={{ backgroundColor: '#001529', color: 'rgba(255, 255, 255, 0.65)' }}

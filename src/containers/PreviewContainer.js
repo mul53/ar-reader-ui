@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { Radio, Typography, Button, Layout, Modal, Checkbox, PageHeader } from 'antd';
+import { Radio, Typography, Button, Layout, Modal, Checkbox, PageHeader, Row, Col } from 'antd';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push as pushA } from 'connected-react-router';
 import ContentViewer from '../components/ContentViewer';
-import Container from '../components/Container';
 import { parsers, contentType } from '../utils/constants';
 import {
   postUrlHtmlPreview as getUrlHtmlPreviewAction,
@@ -120,56 +119,58 @@ class PreviewContainer extends Component {
     const { contentTypeValue, visible, confirmLoading, checkedConsent, consentValidationErrorMessage } = this.state; 
 
     return (
-      <Container>
-        <div style={{ 
-          backgroundColor: '#fff',
-          padding: '16px 32px',
-          margin: '32px 0' 
-        }}>
-          <Content>
-            <PageHeader
-              style={{
-                padding: "16px 0px 0px 0px"
-              }}
-              onBack={() => push('/')}
-              title="Preview"
-            />
-            <Title level={4} style={{ margin: '16px 0px' }}>Choose Content type</Title>
-            <Radio.Group onChange={this.onChange} value={contentTypeValue} style={{ marginBottom: '16px' }}>
-              <Radio value={contentType.HTML}>Html</Radio>
-              <Radio value={contentType.TEXT}>Text</Radio>
-            </Radio.Group>
-            <ContentViewer style={{ marginBottom: '16px' }} retryHandler={this.retryHandler}>
-              { contentTypeValue === contentType.TEXT ? text : html}
-            </ContentViewer>
-            <div
-              style={{
-                marginBottom: "16px"
-              }}
-            >
-              <Checkbox
-                checked={checkedConsent}
-                onChange={this.handleConsent}
-              >
-                Yes, I'm responsible for the archived content and the content is not copyright protected.
-              </Checkbox>
-              { consentValidationErrorMessage.length ?
-                <div style={{ color: 'red' }}>{ consentValidationErrorMessage }</div> : null
-              }
+      <Row>
+        <Col xs={{ span: 22, offset: 1 }} lg={{ span: 12, offset: 6 }}  >
+            <div style={{ 
+              backgroundColor: '#fff',
+              padding: '16px',
+              margin: '16px 0px'
+            }}>
+              <Content>
+                <PageHeader
+                  style={{
+                    padding: "16px 0px 0px 0px"
+                  }}
+                  onBack={() => push('/')}
+                  title="Preview"
+                />
+                <Title level={4} style={{ margin: '16px 0px' }}>Choose Content type</Title>
+                <Radio.Group onChange={this.onChange} value={contentTypeValue} style={{ marginBottom: '16px' }}>
+                  <Radio value={contentType.HTML}>Html</Radio>
+                  <Radio value={contentType.TEXT}>Text</Radio>
+                </Radio.Group>
+                <ContentViewer className="content-viewer" style={{ marginBottom: '16px' }} retryHandler={this.retryHandler}>
+                  { contentTypeValue === contentType.TEXT ? text : html}
+                </ContentViewer>
+                <div
+                  style={{
+                    marginBottom: "16px"
+                  }}
+                >
+                  <Checkbox
+                    checked={checkedConsent}
+                    onChange={this.handleConsent}
+                  >
+                    Yes, I'm responsible for the archived content and the content is not copyright protected.
+                  </Checkbox>
+                  { consentValidationErrorMessage.length ?
+                    <div style={{ color: 'red' }}>{ consentValidationErrorMessage }</div> : null
+                  }
+                </div>
+                <Button type="primary" loading={submitLoading} onClick={this.handleSubmit}>Submit</Button>
+                <Modal
+                  title="Confirm"
+                  visible={visible}
+                  onOk={this.handleOk}
+                  confirmLoading={confirmLoading}
+                  onCancel={this.handleCancel}
+                >
+                  <p>Hey yo</p>
+                </Modal>
+              </Content>
             </div>
-            <Button type="primary" loading={submitLoading} onClick={this.handleSubmit}>Submit</Button>
-            <Modal
-              title="Confirm"
-              visible={visible}
-              onOk={this.handleOk}
-              confirmLoading={confirmLoading}
-              onCancel={this.handleCancel}
-            >
-              <p>Hey yo</p>
-            </Modal>
-          </Content>
-        </div>
-      </Container>
+        </Col>
+      </Row>
     );
   }
 }

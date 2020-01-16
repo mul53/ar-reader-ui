@@ -3,3 +3,15 @@
 body {
   background-color: #f0f2f5;
 }
+
+.content-viewer img {
+  width: 100%;
+}
+
+.ant-card.content-viewer .ant-card-body {
+  height: 600px;
+}
+
+@media (min-wdith: 987px and screen) {
+  
+}

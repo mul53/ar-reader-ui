@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Input } from 'antd';
+import { Row, Col, Input, Card } from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { 
@@ -24,17 +24,23 @@ class HomeContainer extends Component {
 
     return (
       <Row>
-        <Col span={8} offset={8}>
-          <UrlInput
-            placeholder="Enter URL"
-            enterButton="Submit"
-            size="large"
-            onSearch={this.handleUrlSubmit}
-            loading={searchLoading}
-            style={{
-              marginTop: '200px'
-            }}
-          />
+        <Col xs={{ span: 22, offset: 1 }} lg={{ span: 10, offset: 7 }}  >
+          <Card style={{ marginTop: '200px' }}>
+            <div style={{ 
+              textAlign: 'center', 
+              marginBottom: '24px', 
+              fontSize: '1rem' }}
+            >
+              Enter URL to archive content
+            </div>
+            <UrlInput
+              placeholder="e.g www.bbc.com/sport/football/51093972"
+              enterButton="Submit"
+              size="large"
+              onSearch={this.handleUrlSubmit}
+              loading={searchLoading}
+            />
+          </Card>
         </Col>
       </Row>
     );
